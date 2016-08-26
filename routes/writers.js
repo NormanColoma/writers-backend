@@ -14,21 +14,21 @@ MongoClient.connect("mongodb://localhost:27017/writer-db", function(err, db) {
 
 router.get('/', function(req, res, next) {
   Writer.find().toArray(function(err,writers){
-    res.status(200).send(writers);
+    res.status(200).send({data: writers});
   });
 });
 
 router.get('/:id', function(req,res,next){
   const id = new mongodb.ObjectID(req.params.id);
   Writer.findOne({_id: id} , function(err, writer){
-    res.status(200).send(writer);
+    res.status(200).send({data: writer});
   });
 });
 
 router.get('/:id/books', function(req,res,next){
   const id = new mongodb.ObjectID(req.params.id);
   Writer.findOne({_id: id}, {books: true, _id: false},function(err, books){
-    res.status(200).send(books.books);
+    res.status(200).send({data: books.books});
   });
 });
 
