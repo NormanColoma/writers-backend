@@ -18,6 +18,13 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.get('/:id', function(req,res,next){
+  const id = new mongodb.ObjectID(req.params.id);
+  Writer.findOne({_id: id} , function(err, writer){
+    res.status(200).send(writer);
+  });
+});
+
 router.post('/new', function(req,res,next){
   let writer = req.body;
   writer.about = "";
