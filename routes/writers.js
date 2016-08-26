@@ -25,6 +25,13 @@ router.get('/:id', function(req,res,next){
   });
 });
 
+router.get('/:id/books', function(req,res,next){
+  const id = new mongodb.ObjectID(req.params.id);
+  Writer.findOne({_id: id}, {books: true, _id: false},function(err, books){
+    res.status(200).send(books.books);
+  });
+});
+
 router.post('/new', function(req,res,next){
   let writer = req.body;
   writer.about = "";
