@@ -32,15 +32,15 @@ router.get('/:id/books', function(req,res,next){
   });
 });
 
-router.post('/new', function(req,res,next){
+router.post('/', function(req,res,next){
   let writer = req.body;
-  writer.about = "";
-  writer.short_desc = "";
+  writer.about = "Description about "+ req.body.name+" will be available soon. Meanwhile, continue reading about any other author please.";
+  writer.short_desc = "There is no description provided about this author yet.";
   writer.total_books = 0;
   writer.books = [];
   Writer.insert(writer, function(err, result){
     writer = result.ops[0];
-    res.status(201).send(writer);
+    res.status(201).send({data:writer});
   });
 });
 
