@@ -6,39 +6,41 @@ const MongoClient = mongodb.MongoClient;
 
 let Writer=null;
 
-MongoClient.connect("mongodb://localhost:27017/writer-db", function(err, db) {
+MongoClient.connect("mongodb://localhost:27017/writer-db", (err, db) => {
   if(!err) {
     Writer = db.collection('writers');
   }
 });
 
 router.get('/', function(req, res, next) {
-  Writer.find().toArray(function(err,writers){
+  Writer.find().toArray((err,writers) => {
     res.status(200).send({data: writers});
   });
 });
 
 router.get('/:id', function(req,res,next){
   const id = new mongodb.ObjectID(req.params.id);
-  Writer.findOne({_id: id} , function(err, writer){
+  Writer.findOne({_id: id} ,(err, writer) => {
     res.status(200).send({data: writer});
   });
 });
 
 router.get('/:id/books', function(req,res,next){
   const id = new mongodb.ObjectID(req.params.id);
-  Writer.findOne({_id: id}, {books: true, _id: false},function(err, books){
+  Writer.findOne({_id: id}, {books: true, _id: false},(err, books) => {
     res.status(200).send({data: books.books});
   });
 });
 
 router.post('/', function(req,res,next){
-  let writer = req.body;
-  writer.about = "Description about "+ req.body.name+" will be available soon. Meanwhile, continue reading about any other author please.";
-  writer.short_desc = "There is no description provided about this author yet.";
-  writer.total_books = 0;
-  writer.books = [];
-  Writer.insert(writer, function(err, result){
+  let writer = {
+    name: req.body.name,
+    about: `Description about ${req.body.name} will be available soon. Meanwhile, continue reading about any other author please.`,
+    short_desc: `There is no description provided about this author yet.`,
+    total_books: 0,
+    books: []
+  };
+  Writer.insert(writer, (err, result) => {
     writer = result.ops[0];
     res.status(201).send({data:writer});
   });
