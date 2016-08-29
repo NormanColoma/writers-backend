@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-import routes from './routes/index';
 import writers from './routes/writers';
 
 const app = express();
@@ -24,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors());
-app.use('/', routes);
+
 app.use('/writers', writers);
 
 // catch 404 and forward to error handler
