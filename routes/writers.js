@@ -18,6 +18,19 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.get('/page/:page', function(req, res, next) {
+  const skip = req.params.page * 3;
+  Writer.find().skip(skip).limit(3).toArray((err,writers) => {
+    res.status(200).send({data: writers});
+  });
+});
+
+router.get('/total', function(req, res, next) {
+  Writer.find().count((err, count)=>{
+    res.status(200).send({data: count});
+  });
+});
+
 router.get('/:id', function(req,res,next){
   const id = new mongodb.ObjectID(req.params.id);
   Writer.findOne({_id: id} ,(err, writer) => {
