@@ -59,4 +59,11 @@ router.post('/', function(req,res,next){
   });
 });
 
+router.delete('/:id', function(req,res,next){
+  const id = new mongodb.ObjectID(req.params.id);
+  Writer.remove({_id: id} ,(err, writer) => {
+    res.status(204).send();
+  });
+});
+
 module.exports = router;
